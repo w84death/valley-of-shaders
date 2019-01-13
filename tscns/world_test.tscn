@@ -1,0 +1,178 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://shaders/heightmap_terrain.shader" type="Shader" id=1]
+[ext_resource path="res://pngs/heightmap_castle.png" type="Texture" id=2]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+
+seed = 89
+period = 24.0
+persistence = 0.66
+lacunarity = 4.0
+
+[sub_resource type="NoiseTexture" id=2]
+
+seamless = true
+noise = SubResource( 1 )
+
+[sub_resource type="ShaderMaterial" id=3]
+
+shader = ExtResource( 1 )
+shader_param/heightmap_size = Vector2( 256, 256 )
+shader_param/height_factor = 128.0
+shader_param/green_line = 0.42
+shader_param/blue_line = 0.21
+shader_param/heightmap = ExtResource( 2 )
+shader_param/noisemap = SubResource( 2 )
+
+[sub_resource type="PlaneMesh" id=4]
+
+size = Vector2( 256, 256 )
+subdivide_width = 256
+subdivide_depth = 256
+
+[sub_resource type="Animation" id=5]
+
+length = 8.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 180, 40, 0 ), Vector3( 360, 40, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+
+length = 14.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2.5, 5, 6.2, 10.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -91.508, 178.299, 103.787 ), Vector3( -91.508, 167.689, 103.787 ), Vector3( -125.128, 70.899, 128.037 ), Vector3( -118.655, 41.422, 107.148 ), Vector3( -77.396, 44.009, 80.538 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.4, 3, 4, 4.7, 6.5, 8, 11.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -42.1, -48.261, 0 ), Vector3( -42.1, -48.261, 0 ), Vector3( -31.413, -46.654, 0.25 ), Vector3( -20.247, -43.972, -0.425 ), Vector3( -9.08, -42.751, 0 ), Vector3( -10.169, -49.851, 0.44 ), Vector3( -11.872, -58.81, -0.654 ), Vector3( -21.228, -29.494, -0.481 ) ]
+}
+
+[sub_resource type="ProceduralSky" id=7]
+
+sky_top_color = Color( 0.396078, 0.784314, 1, 1 )
+sky_horizon_color = Color( 0.964706, 0.980392, 0.839216, 1 )
+sky_curve = 0.146206
+ground_bottom_color = Color( 0.240386, 0.308594, 0.191666, 1 )
+ground_horizon_color = Color( 0.607843, 0.8, 0.431373, 1 )
+ground_curve = 0.190274
+
+[sub_resource type="Environment" id=8]
+
+background_mode = 2
+background_sky = SubResource( 7 )
+ambient_light_color = Color( 0.243137, 0.243137, 0.243137, 1 )
+fog_enabled = true
+fog_color = Color( 0.192157, 0.290196, 0.262745, 1 )
+fog_depth_curve = 0.341511
+fog_transmit_enabled = true
+fog_transmit_curve = 0.203063
+ss_reflections_max_steps = 139
+ss_reflections_fade_in = 0.332871
+ssao_radius = 10.7
+ssao_intensity = 12.0
+ssao_radius2 = 20.8
+ssao_intensity2 = 23.3
+ssao_quality = 2
+dof_blur_far_enabled = true
+dof_blur_far_distance = 192.0
+
+[sub_resource type="BakedLightmapData" id=9]
+
+bounds = AABB( -128, -128, -128, 256, 256, 256 )
+cell_space_transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 512, 512, 512 )
+cell_subdiv = 11
+octree = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 )
+
+[sub_resource type="GIProbeData" id=10]
+
+bounds = AABB( -256, -128, -256, 512, 256, 512 )
+cell_size = 4.0
+to_cell_xform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 64, 32, 64 )
+dynamic_data = PoolIntArray( 0, 8, 128, 64, 128, 1, 0, 0, 2, 9, 0, 0, 8, 0, 445453168, 0, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 8355711, 0 )
+dynamic_range = 4
+energy = 0.25
+bias = 1.5
+normal_bias = 0.0
+propagation = 0.7
+
+[node name="world" type="Spatial"]
+
+[node name="terrain" type="MeshInstance" parent="."]
+material_override = SubResource( 3 )
+use_in_baked_light = true
+mesh = SubResource( 4 )
+material/0 = null
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="sun" type="DirectionalLight" parent="."]
+editor/display_folded = true
+transform = Transform( 0.766044, -0.340675, -0.545083, 0, -0.847999, 0.529996, -0.642788, -0.406, -0.649605, 0, 40.6346, 0 )
+light_color = Color( 1, 0.984314, 0.764706, 1 )
+light_energy = 1.5
+light_bake_mode = 2
+shadow_enabled = true
+directional_shadow_blend_splits = true
+directional_shadow_depth_range = 1
+directional_shadow_max_distance = 512.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="sun"]
+autoplay = "sun"
+anims/sun = SubResource( 5 )
+
+[node name="Camera" type="Camera" parent="."]
+editor/display_folded = true
+transform = Transform( 0.743034, 0.399475, -0.536954, -0.00182045, 0.803522, 0.595273, 0.66925, -0.441331, 0.597772, -87.1795, 148.563, 97.7747 )
+current = true
+fov = 90.0
+far = 512.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera"]
+autoplay = "demo"
+anims/demo = SubResource( 6 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 8 )
+
+[node name="BakedLightmap" type="BakedLightmap" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0 )
+bake_extents = Vector3( 128, 128, 128 )
+light_data = SubResource( 9 )
+
+[node name="GIProbe" type="GIProbe" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0 )
+extents = Vector3( 256, 128, 256 )
+energy = 0.25
+data = SubResource( 10 )
+

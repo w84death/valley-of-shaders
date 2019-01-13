@@ -2,30 +2,30 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/heightmap_castle.png-8c0edccbe9fc40c7879852e1c4bc459c.stex"
+path="res://.import/trace.png-faeb11afb4e1162cb02e5466f226b428.stex"
 
 [deps]
 
-source_file="res://pngs/heightmap_castle.png"
-dest_files=[ "res://.import/heightmap_castle.png-8c0edccbe9fc40c7879852e1c4bc459c.stex" ]
+source_file="res://pngs/trace.png"
+dest_files=[ "res://.import/trace.png-faeb11afb4e1162cb02e5466f226b428.stex" ]
 
 [params]
 
-compress/mode=3
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=true
-flags/filter=false
+flags/repeat=0
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
-process/fix_alpha_border=false
+process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=false
+detect_3d=true
 svg/scale=1.0

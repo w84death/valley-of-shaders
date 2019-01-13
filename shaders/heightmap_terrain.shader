@@ -7,6 +7,7 @@ uniform sampler2D heightmap;
 uniform sampler2D noisemap;
 uniform float green_line = 0.8;
 uniform float blue_line = 0.8;
+uniform float shore_wave_size = 0.01;
 
 float get_height(vec2 pos) {
 	pos -= .5 * heightmap_size;
@@ -34,7 +35,6 @@ void vertex() {
 }
 
 void fragment() {
-	float shore_wave_size = 0.01;
 	float ran = texture(noisemap, UV*10.).x;
 	vec3 alb = vec3(color_height);
 	

@@ -1,7 +1,12 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://shaders/heightmap_terrain.shader" type="Shader" id=1]
-[ext_resource path="res://pngs/heightmap_castle.png" type="Texture" id=2]
+[ext_resource path="res://gds/world.gd" type="Script" id=1]
+[ext_resource path="res://shaders/heightmap_terrain.shader" type="Shader" id=2]
+[ext_resource path="res://pngs/heightmap_castle.png" type="Texture" id=3]
+[ext_resource path="res://gds/cursor.gd" type="Script" id=4]
+[ext_resource path="res://pngs/hand_0.png" type="Texture" id=5]
+[ext_resource path="res://pngs/hand_1.png" type="Texture" id=6]
+[ext_resource path="res://tscns/knight.tscn" type="PackedScene" id=7]
 
 [sub_resource type="OpenSimplexNoise" id=1]
 
@@ -17,12 +22,13 @@ noise = SubResource( 1 )
 
 [sub_resource type="ShaderMaterial" id=3]
 
-shader = ExtResource( 1 )
+shader = ExtResource( 2 )
 shader_param/heightmap_size = Vector2( 256, 256 )
-shader_param/height_factor = 128.0
+shader_param/height_factor = 64.0
 shader_param/green_line = 0.42
-shader_param/blue_line = 0.21
-shader_param/heightmap = ExtResource( 2 )
+shader_param/blue_line = 0.16
+shader_param/shore_wave_size = 0.01
+shader_param/heightmap = ExtResource( 3 )
 shader_param/noisemap = SubResource( 2 )
 
 [sub_resource type="PlaneMesh" id=4]
@@ -46,35 +52,6 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 180, 40, 0 ), Vector3( 360, 40, 0 ) ]
-}
-
-[sub_resource type="Animation" id=6]
-
-length = 14.0
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:translation")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 2.5, 5, 6.2, 10.7 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( -91.508, 178.299, 103.787 ), Vector3( -91.508, 167.689, 103.787 ), Vector3( -125.128, 70.899, 128.037 ), Vector3( -118.655, 41.422, 107.148 ), Vector3( -77.396, 44.009, 80.538 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath(".:rotation_degrees")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 1.4, 3, 4, 4.7, 6.5, 8, 11.2 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( -42.1, -48.261, 0 ), Vector3( -42.1, -48.261, 0 ), Vector3( -31.413, -46.654, 0.25 ), Vector3( -20.247, -43.972, -0.425 ), Vector3( -9.08, -42.751, 0 ), Vector3( -10.169, -49.851, 0.44 ), Vector3( -11.872, -58.81, -0.654 ), Vector3( -21.228, -29.494, -0.481 ) ]
 }
 
 [sub_resource type="ProceduralSky" id=7]
@@ -125,7 +102,22 @@ bias = 1.5
 normal_bias = 0.0
 propagation = 0.7
 
+[sub_resource type="SpriteFrames" id=11]
+
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "action",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+} ]
+
 [node name="world" type="Spatial"]
+script = ExtResource( 1 )
 
 [node name="terrain" type="MeshInstance" parent="."]
 material_override = SubResource( 3 )
@@ -138,7 +130,7 @@ __meta__ = {
 
 [node name="sun" type="DirectionalLight" parent="."]
 editor/display_folded = true
-transform = Transform( 0.766044, -0.340675, -0.545083, 0, -0.847999, 0.529996, -0.642788, -0.406, -0.649605, 0, 40.6346, 0 )
+transform = Transform( 0.766044, -0.361237, 0.531679, 0, 0.827146, 0.561985, -0.642788, -0.430506, 0.63363, 0, 40.6346, 0 )
 light_color = Color( 1, 0.984314, 0.764706, 1 )
 light_energy = 1.5
 light_bake_mode = 2
@@ -148,19 +140,7 @@ directional_shadow_depth_range = 1
 directional_shadow_max_distance = 512.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="sun"]
-autoplay = "sun"
 anims/sun = SubResource( 5 )
-
-[node name="Camera" type="Camera" parent="."]
-editor/display_folded = true
-transform = Transform( 0.743034, 0.399475, -0.536954, -0.00182045, 0.803522, 0.595273, 0.66925, -0.441331, 0.597772, -87.1795, 148.563, 97.7747 )
-current = true
-fov = 90.0
-far = 512.0
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera"]
-autoplay = "demo"
-anims/demo = SubResource( 6 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 8 )
@@ -175,4 +155,27 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0 )
 extents = Vector3( 256, 128, 256 )
 energy = 0.25
 data = SubResource( 10 )
+
+[node name="cursor" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -27.696, 12.35, 86.493 )
+script = ExtResource( 4 )
+
+[node name="sprite" type="AnimatedSprite3D" parent="cursor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 8 )
+pixel_size = 0.5
+axis = 1
+frames = SubResource( 11 )
+animation = "idle"
+
+[node name="Camera" type="Camera" parent="cursor"]
+transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 32, 32 )
+current = true
+fov = 75.0
+far = 512.0
+
+[node name="spam" type="Spatial" parent="."]
+
+[node name="knight" parent="spam" instance=ExtResource( 7 )]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48.3023, 20.3789, 56.0764 )
 

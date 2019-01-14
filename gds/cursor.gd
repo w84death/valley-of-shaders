@@ -59,7 +59,10 @@ func _input(event):
 			move_right()
 
 		if Input.is_action_pressed("game_x"):
-			select()
+			select_x()
+		
+		if Input.is_action_pressed("game_a"):
+			select_a()
 
 func move_forward(): move_to.z -= 4
 func move_backward(): move_to.z += 4
@@ -68,5 +71,8 @@ func move_right(): move_to.x += 4
 
 
 func cinematic_mode(): return
-func select():
+func select_a():
 	$"..".spawn_knight(transform.origin)
+	
+func select_x():
+	$"..".change_map_to(1)

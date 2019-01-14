@@ -35,7 +35,7 @@ void vertex() {
 }
 
 void fragment() {
-	float ran = texture(noisemap, UV*10.).x;
+	float ran = texture(noisemap, UV).x;
 	vec3 alb = vec3(color_height);
 	
 	float g_line = step(green_line + ran * .3, color_height);

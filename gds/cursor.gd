@@ -2,15 +2,15 @@ extends Spatial
 
 export var GAME_MODE = 1
 
-export var MAP_SIZE = Vector2(256, 256)
-export var BLUE_LINE = 0.16
-export var GREEN_LINE = 0.44
-export var MOVE_FACTOR = 2.0
+export var MAP_SIZE = Vector2(1024, 512)
 export var MAP_HEIGHT_FACTOR = 64
+export var BLUE_LINE = 0.2
+export var GREEN_LINE = 0.45
+export var MOVE_FACTOR = 2.0
 
 var move_to
 var height_map
-onready var heightmap_data = load("res://pngs/heightmap_castle.png")
+onready var heightmap_data = load("res://pngs/map1.png")
 
 func _ready():
 	height_map = heightmap_data.get_data()
@@ -72,6 +72,10 @@ func move_right(): move_to.x += 4
 
 func cinematic_mode(): return
 func select_a():
+	$"..".spawn_knight(transform.origin)
+	$"..".spawn_knight(transform.origin)
+	$"..".spawn_knight(transform.origin)
+	$"..".spawn_knight(transform.origin)
 	$"..".spawn_knight(transform.origin)
 	
 func select_x():

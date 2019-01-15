@@ -1,19 +1,17 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://gds/world.gd" type="Script" id=1]
 [ext_resource path="res://mats/map1.material" type="Material" id=2]
-[ext_resource path="res://mats/map2.material" type="Material" id=3]
-[ext_resource path="res://gds/cursor.gd" type="Script" id=4]
-[ext_resource path="res://pngs/hand_0.png" type="Texture" id=5]
-[ext_resource path="res://pngs/hand_1.png" type="Texture" id=6]
-[ext_resource path="res://tscns/knight.tscn" type="PackedScene" id=7]
-[ext_resource path="res://fnts/CompassPro.ttf" type="DynamicFontData" id=8]
-[ext_resource path="res://gds/fps.gd" type="Script" id=9]
+[ext_resource path="res://gds/cursor.gd" type="Script" id=3]
+[ext_resource path="res://pngs/hand_0.png" type="Texture" id=4]
+[ext_resource path="res://pngs/hand_1.png" type="Texture" id=5]
+[ext_resource path="res://fnts/CompassPro.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://gds/fps.gd" type="Script" id=7]
 
 [sub_resource type="PlaneMesh" id=1]
 
-size = Vector2( 256, 256 )
-subdivide_width = 256
+size = Vector2( 1024, 512 )
+subdivide_width = 512
 subdivide_depth = 256
 
 [sub_resource type="Animation" id=2]
@@ -35,96 +33,76 @@ tracks/0/keys = {
 
 [sub_resource type="ProceduralSky" id=3]
 
+radiance_size = 0
 sky_top_color = Color( 0.396078, 0.784314, 1, 1 )
 sky_horizon_color = Color( 0.964706, 0.980392, 0.839216, 1 )
 sky_curve = 0.146206
-ground_bottom_color = Color( 0.240386, 0.308594, 0.191666, 1 )
-ground_horizon_color = Color( 0.607843, 0.8, 0.431373, 1 )
-ground_curve = 0.190274
+ground_bottom_color = Color( 0.113725, 0.662745, 0.862745, 1 )
+ground_horizon_color = Color( 0.101961, 0.662745, 0.858824, 1 )
+ground_curve = 0.117128
+sun_curve = 0.0784588
+texture_size = 0
 
 [sub_resource type="Environment" id=4]
 
 background_mode = 2
 background_sky = SubResource( 3 )
-ambient_light_color = Color( 0.243137, 0.243137, 0.243137, 1 )
+ambient_light_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+ambient_light_energy = 0.33
 fog_enabled = true
-fog_color = Color( 0.192157, 0.290196, 0.262745, 1 )
-fog_depth_curve = 0.341511
-fog_transmit_enabled = true
+fog_color = Color( 0.109804, 0.662745, 0.862745, 1 )
+fog_depth_begin = 128.0
+fog_depth_end = 512.0
+fog_depth_curve = 1.51572
 fog_transmit_curve = 0.203063
+tonemap_mode = 2
 ss_reflections_max_steps = 139
 ss_reflections_fade_in = 0.332871
-ssao_radius = 10.7
-ssao_intensity = 12.0
-ssao_radius2 = 20.8
-ssao_intensity2 = 23.3
-ssao_quality = 2
-dof_blur_far_enabled = true
+ssao_enabled = true
+ssao_radius = 2.0
+ssao_intensity = 2.0
+ssao_bias = 0.001
+ssao_light_affect = 1.0
+ssao_quality = 1
+ssao_edge_sharpness = 0.52
 dof_blur_far_distance = 192.0
 
-[sub_resource type="BakedLightmapData" id=5]
-
-bounds = AABB( -128, -128, -128, 256, 256, 256 )
-cell_space_transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 4, 512, 512, 512 )
-cell_subdiv = 11
-octree = PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255 )
-
-[sub_resource type="GIProbeData" id=6]
-
-bounds = AABB( -256, -128, -256, 512, 256, 512 )
-cell_size = 4.0
-to_cell_xform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 64, 32, 64 )
-dynamic_data = PoolIntArray( 0, 8, 128, 64, 128, 1, 0, 0, 2, 9, 0, 0, 8, 0, 199805904, 0, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 8355711, 0 )
-dynamic_range = 4
-energy = 0.25
-bias = 1.5
-normal_bias = 0.0
-propagation = 0.7
-
-[sub_resource type="SpriteFrames" id=7]
+[sub_resource type="SpriteFrames" id=5]
 
 animations = [ {
-"frames": [ ExtResource( 5 ), ExtResource( 6 ) ],
+"frames": [ ExtResource( 4 ), ExtResource( 5 ) ],
 "loop": true,
 "name": "action",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 5 ) ],
+"frames": [ ExtResource( 4 ) ],
 "loop": true,
 "name": "idle",
 "speed": 5.0
 } ]
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=6]
 
 size = 12
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
-font_data = ExtResource( 8 )
+font_data = ExtResource( 6 )
 
-[sub_resource type="Theme" id=9]
+[sub_resource type="Theme" id=7]
 
-default_font = SubResource( 8 )
+default_font = SubResource( 6 )
 
 [node name="world" type="Spatial"]
 script = ExtResource( 1 )
+GAME_MODE = null
 
 [node name="terrain" type="MeshInstance" parent="."]
-material_override = ExtResource( 2 )
-use_in_baked_light = true
 mesh = SubResource( 1 )
-material/0 = null
+material/0 = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="terrain2" type="MeshInstance" parent="."]
-visible = false
-material_override = ExtResource( 3 )
-use_in_baked_light = true
-mesh = SubResource( 1 )
-material/0 = null
 
 [node name="sun" type="DirectionalLight" parent="."]
 editor/display_folded = true
@@ -143,45 +121,30 @@ anims/sun = SubResource( 2 )
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 4 )
 
-[node name="BakedLightmap" type="BakedLightmap" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0 )
-bake_extents = Vector3( 128, 128, 128 )
-light_data = SubResource( 5 )
-
-[node name="GIProbe" type="GIProbe" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0 )
-extents = Vector3( 256, 128, 256 )
-energy = 0.25
-data = SubResource( 6 )
-
 [node name="cursor" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -27.696, 12.35, 86.493 )
-script = ExtResource( 4 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -70.3396, 12.35, 91.4296 )
+script = ExtResource( 3 )
 
 [node name="sprite" type="AnimatedSprite3D" parent="cursor"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14, 0 )
 flip_v = true
 pixel_size = 0.5
 double_sided = false
-frames = SubResource( 7 )
+frames = SubResource( 5 )
 animation = "idle"
 
 [node name="Camera" type="Camera" parent="cursor"]
-transform = Transform( 1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 32, 32 )
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 64, 64 )
 current = true
-fov = 75.0
+fov = 110.0
 far = 512.0
 
 [node name="spam" type="Spatial" parent="."]
 
-[node name="knight" parent="spam" instance=ExtResource( 7 )]
-editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48.3023, 20.3789, 56.0764 )
-
 [node name="HUD" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = SubResource( 9 )
+theme = SubResource( 7 )
 
 [node name="counter" type="Label" parent="HUD"]
 margin_left = 5.0
@@ -196,5 +159,5 @@ margin_top = 15.0
 margin_right = 47.0
 margin_bottom = 30.0
 text = "60fps"
-script = ExtResource( 9 )
+script = ExtResource( 7 )
 

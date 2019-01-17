@@ -42,5 +42,9 @@ func spawn_unit(id, pos):
 func refresh_units_counter():
 	$HUD/counter.set_text('Units on map: ' + str(counter))
 
+func change_map_seed():
+	heightmap_file.get_noise().set_seed(randi()*1024)
+	height_map = heightmap_file.get_noise().get_image(MAP_SIZE[0], MAP_SIZE[1])
+
 func _on_world_tick_timeout():
 	pass

@@ -2,14 +2,14 @@ shader_type spatial;
 
 uniform vec2 heightmap_size = vec2(1024.0, 1024.0);
 uniform float height_factor = 64.0;
-uniform float mountains_factor = 16.;
+uniform float mountains_factor = 24.;
 uniform float UV_FACTOR = 4.;
 varying float color_height;
 uniform sampler2D heightmap;
 uniform sampler2D noisemap;
-uniform float white_line = 0.8;
+uniform float white_line = 0.9;
 uniform float green_line = 0.45;
-uniform float blue_line = 0.2;
+uniform float blue_line = 0.35;
 
 float get_height(vec2 pos) {
 	pos -= .5 * heightmap_size;

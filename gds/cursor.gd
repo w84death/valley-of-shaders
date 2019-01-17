@@ -46,4 +46,4 @@ func select_a():
 		get_parent().spawn_unit(0, transform.origin)
 	
 func select_x():
-	pass
+	get_parent().change_map_seed()

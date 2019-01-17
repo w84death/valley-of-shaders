@@ -70,7 +70,4 @@ func ai_make_move():
 	if randf() > 0.5:
 		move_to.x += -AI_MOVE_RANGE + randf() * (AI_MOVE_RANGE*2)
 		move_to.z += -AI_MOVE_RANGE + randf() * (AI_MOVE_RANGE*2)
-		$body.play("run")
-	else:
-		$body.play("idle")
 	$ai_tick.set_wait_time(randf()*AI_THINKING_LAG_FACTOR)

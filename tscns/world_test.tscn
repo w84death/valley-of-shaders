@@ -1,12 +1,11 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://gds/world.gd" type="Script" id=1]
 [ext_resource path="res://mats/map1.material" type="Material" id=2]
 [ext_resource path="res://gds/cursor.gd" type="Script" id=3]
-[ext_resource path="res://pngs/hand_0.png" type="Texture" id=4]
-[ext_resource path="res://pngs/hand_1.png" type="Texture" id=5]
-[ext_resource path="res://fnts/CompassPro.ttf" type="DynamicFontData" id=6]
-[ext_resource path="res://gds/fps.gd" type="Script" id=7]
+[ext_resource path="res://pngs/blur_light.png" type="Texture" id=4]
+[ext_resource path="res://fnts/CompassPro.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://gds/fps.gd" type="Script" id=6]
 
 [sub_resource type="PlaneMesh" id=1]
 
@@ -66,31 +65,59 @@ ssao_quality = 1
 ssao_edge_sharpness = 0.52
 dof_blur_far_distance = 192.0
 
-[sub_resource type="SpriteFrames" id=5]
+[sub_resource type="Gradient" id=10]
 
-animations = [ {
-"frames": [ ExtResource( 4 ), ExtResource( 5 ) ],
-"loop": true,
-"name": "action",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 4 ) ],
-"loop": true,
-"name": "idle",
-"speed": 5.0
-} ]
+offsets = PoolRealArray( 0, 0.340426, 0.638298, 1 )
+colors = PoolColorArray( 0.355469, 1, 0.973564, 0, 1, 1, 1, 1, 0, 0.780392, 1, 1, 0.224609, 0, 1, 0 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="GradientTexture" id=11]
+
+gradient = SubResource( 10 )
+
+[sub_resource type="Curve" id=12]
+
+_data = [ Vector2( 0, 0.89 ), 0.0, -0.583859, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+
+width = 512
+curve = SubResource( 12 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+
+spread = 3.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 64.0
+scale_curve = SubResource( 13 )
+color_ramp = SubResource( 11 )
+
+[sub_resource type="SpatialMaterial" id=6]
+
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 4 )
+
+[sub_resource type="QuadMesh" id=7]
+
+material = SubResource( 6 )
+size = Vector2( 8, 8 )
+
+[sub_resource type="DynamicFont" id=8]
 
 size = 12
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
-font_data = ExtResource( 6 )
+font_data = ExtResource( 5 )
 
-[sub_resource type="Theme" id=7]
+[sub_resource type="Theme" id=9]
 
-default_font = SubResource( 6 )
+default_font = SubResource( 8 )
 
 [node name="world" type="Spatial"]
 script = ExtResource( 1 )
@@ -122,25 +149,30 @@ environment = SubResource( 4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -70.3396, 12.35, 91.4296 )
 script = ExtResource( 3 )
 
-[node name="sprite" type="AnimatedSprite3D" parent="cursor"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14, 0 )
-flip_v = true
-pixel_size = 0.5
-double_sided = false
-frames = SubResource( 5 )
-animation = "idle"
-
 [node name="Camera" type="Camera" parent="cursor"]
 transform = Transform( 1, 0, 0, 0, 0.5, 0.866026, 0, -0.866026, 0.5, 0, 128, 64 )
 current = true
 far = 256.0
+
+[node name="Particles" type="Particles" parent="cursor"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0 )
+lifetime = 0.5
+preprocess = 1.0
+visibility_aabb = AABB( -4, -4, -4, 8, 8, 64 )
+process_material = SubResource( 5 )
+draw_pass_1 = SubResource( 7 )
+
+[node name="Sprite3D" type="Sprite3D" parent="cursor"]
+transform = Transform( 1, 0, 0, 0, 32, 0, 0, 0, 1, 0, 128, 0 )
+pixel_size = 0.1
+texture = ExtResource( 4 )
 
 [node name="spam" type="Spatial" parent="."]
 
 [node name="HUD" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = SubResource( 7 )
+theme = SubResource( 9 )
 
 [node name="counter" type="Label" parent="HUD"]
 margin_left = 5.0
@@ -155,5 +187,5 @@ margin_top = 15.0
 margin_right = 47.0
 margin_bottom = 30.0
 text = "60fps"
-script = ExtResource( 7 )
+script = ExtResource( 6 )
 

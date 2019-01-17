@@ -1,9 +1,6 @@
 extends Spatial
 
 export var GAME_MODE = 1
-
-export var BLUE_LINE = 0.2
-export var GREEN_LINE = 0.45
 export var MOVE_FACTOR = 2.0
 
 var move_to
@@ -14,10 +11,6 @@ func _ready():
 func _process(delta):
 	if move_to != transform.origin:
 		move_to.y = get_parent().get_height(transform.origin)
-		
-		if move_to.y < BLUE_LINE:
-			move_to.y = BLUE_LINE
-			
 		transform.origin += (move_to - transform.origin) * delta * MOVE_FACTOR
 	
 func _input(event):
@@ -49,7 +42,8 @@ func move_right(): move_to.x += 4
 
 func cinematic_mode(): return
 func select_a():
-	get_parent().spawn_tower(transform.origin)
+	for i in 126:
+		get_parent().spawn_unit(0, transform.origin)
 	
 func select_x():
 	pass

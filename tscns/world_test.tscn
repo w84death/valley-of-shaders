@@ -10,27 +10,26 @@
 
 [sub_resource type="PlaneMesh" id=1]
 
-size = Vector2( 1024, 512 )
+size = Vector2( 1024, 1024 )
 subdivide_width = 512
-subdivide_depth = 256
+subdivide_depth = 512
 
-[sub_resource type="OpenSimplexNoise" id=14]
+[sub_resource type="OpenSimplexNoise" id=2]
 
 seed = 777
 period = 24.0
 persistence = 0.66
 lacunarity = 4.0
 
-[sub_resource type="NoiseTexture" id=2]
+[sub_resource type="NoiseTexture" id=3]
 
-height = 256
 seamless = true
-noise = SubResource( 14 )
+noise = SubResource( 2 )
 
-[sub_resource type="ShaderMaterial" id=15]
+[sub_resource type="ShaderMaterial" id=4]
 
 shader = ExtResource( 2 )
-shader_param/heightmap_size = Vector2( 1024, 512 )
+shader_param/heightmap_size = Vector2( 1024, 1024 )
 shader_param/height_factor = 64.0
 shader_param/mountains_factor = 16.0
 shader_param/UV_FACTOR = 4.0
@@ -38,9 +37,9 @@ shader_param/white_line = 0.8
 shader_param/green_line = 0.45
 shader_param/blue_line = 0.2
 shader_param/heightmap = ExtResource( 3 )
-shader_param/noisemap = SubResource( 2 )
+shader_param/noisemap = SubResource( 3 )
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=5]
 
 length = 8.0
 loop = true
@@ -57,7 +56,7 @@ tracks/0/keys = {
 "values": [ Vector3( 180, 40, 0 ), Vector3( 360, 40, 0 ) ]
 }
 
-[sub_resource type="ProceduralSky" id=3]
+[sub_resource type="ProceduralSky" id=6]
 
 radiance_size = 0
 sky_top_color = Color( 0.396078, 0.784314, 1, 1 )
@@ -69,10 +68,10 @@ ground_curve = 0.117128
 sun_curve = 0.0784588
 texture_size = 0
 
-[sub_resource type="Environment" id=4]
+[sub_resource type="Environment" id=7]
 
 background_mode = 2
-background_sky = SubResource( 3 )
+background_sky = SubResource( 6 )
 ambient_light_color = Color( 0.121569, 0.121569, 0.121569, 1 )
 ambient_light_energy = 0.33
 fog_enabled = true
@@ -92,33 +91,33 @@ ssao_quality = 1
 ssao_edge_sharpness = 0.52
 dof_blur_far_distance = 192.0
 
-[sub_resource type="Gradient" id=5]
+[sub_resource type="Gradient" id=8]
 
 offsets = PoolRealArray( 0, 0.340426, 0.638298, 1 )
 colors = PoolColorArray( 0.355469, 1, 0.973564, 0, 1, 1, 1, 1, 0, 0.780392, 1, 1, 0.224609, 0, 1, 0 )
 
-[sub_resource type="GradientTexture" id=6]
+[sub_resource type="GradientTexture" id=9]
 
-gradient = SubResource( 5 )
+gradient = SubResource( 8 )
 
-[sub_resource type="Curve" id=7]
+[sub_resource type="Curve" id=10]
 
 _data = [ Vector2( 0, 0.89 ), 0.0, -0.583859, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=8]
+[sub_resource type="CurveTexture" id=11]
 
 width = 512
-curve = SubResource( 7 )
+curve = SubResource( 10 )
 
-[sub_resource type="ParticlesMaterial" id=9]
+[sub_resource type="ParticlesMaterial" id=12]
 
 spread = 3.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 64.0
-scale_curve = SubResource( 8 )
-color_ramp = SubResource( 6 )
+scale_curve = SubResource( 11 )
+color_ramp = SubResource( 9 )
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="SpatialMaterial" id=13]
 
 flags_transparent = true
 flags_unshaded = true
@@ -129,12 +128,12 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 albedo_texture = ExtResource( 5 )
 
-[sub_resource type="QuadMesh" id=11]
+[sub_resource type="QuadMesh" id=14]
 
-material = SubResource( 10 )
+material = SubResource( 13 )
 size = Vector2( 8, 8 )
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="DynamicFont" id=15]
 
 size = 12
 outline_size = 2
@@ -142,9 +141,9 @@ outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
 font_data = ExtResource( 6 )
 
-[sub_resource type="Theme" id=13]
+[sub_resource type="Theme" id=16]
 
-default_font = SubResource( 12 )
+default_font = SubResource( 15 )
 
 [node name="world" type="Spatial"]
 script = ExtResource( 1 )
@@ -155,7 +154,7 @@ autostart = true
 
 [node name="terrain" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )
-material/0 = SubResource( 15 )
+material/0 = SubResource( 4 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -171,10 +170,10 @@ directional_shadow_mode = 0
 directional_shadow_max_distance = 300.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="sun"]
-anims/sun = SubResource( 16 )
+anims/sun = SubResource( 5 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 4 )
+environment = SubResource( 7 )
 
 [node name="cursor" type="Position3D" parent="."]
 script = ExtResource( 4 )
@@ -189,8 +188,8 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0
 lifetime = 0.5
 preprocess = 1.0
 visibility_aabb = AABB( -4, -4, -4, 8, 8, 64 )
-process_material = SubResource( 9 )
-draw_pass_1 = SubResource( 11 )
+process_material = SubResource( 12 )
+draw_pass_1 = SubResource( 14 )
 
 [node name="Sprite3D" type="Sprite3D" parent="cursor"]
 transform = Transform( 1, 0, 0, 0, 32, 0, 0, 0, 1, 0, 128, 0 )
@@ -200,7 +199,7 @@ texture = ExtResource( 5 )
 [node name="HUD" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = SubResource( 13 )
+theme = SubResource( 16 )
 
 [node name="counter" type="Label" parent="HUD"]
 margin_left = 5.0
@@ -216,12 +215,5 @@ margin_right = 47.0
 margin_bottom = 30.0
 text = "60fps"
 script = ExtResource( 7 )
-
-[node name="Sprite" type="Sprite" parent="HUD"]
-position = Vector2( 563, 45 )
-scale = Vector2( 0.119141, 0.117187 )
-texture = ExtResource( 3 )
-
-[node name="towers" type="Node" parent="."]
 
 [connection signal="timeout" from="world_tick" to="." method="_on_world_tick_timeout"]

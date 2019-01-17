@@ -52,13 +52,12 @@ ambient_light_energy = 0.33
 fog_enabled = true
 fog_color = Color( 0.109804, 0.662745, 0.862745, 1 )
 fog_depth_begin = 128.0
-fog_depth_end = 512.0
-fog_depth_curve = 1.51572
+fog_depth_end = 386.0
+fog_depth_curve = 2.73207
 fog_transmit_curve = 0.203063
-tonemap_mode = 2
+tonemap_mode = 3
 ss_reflections_max_steps = 139
 ss_reflections_fade_in = 0.332871
-ssao_enabled = true
 ssao_radius = 2.0
 ssao_intensity = 2.0
 ssao_bias = 0.001
@@ -95,7 +94,6 @@ default_font = SubResource( 6 )
 
 [node name="world" type="Spatial"]
 script = ExtResource( 1 )
-GAME_MODE = null
 
 [node name="terrain" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )
@@ -111,9 +109,8 @@ light_color = Color( 1, 0.984314, 0.764706, 1 )
 light_energy = 1.5
 light_bake_mode = 2
 shadow_enabled = true
-directional_shadow_blend_splits = true
-directional_shadow_depth_range = 1
-directional_shadow_max_distance = 512.0
+directional_shadow_mode = 0
+directional_shadow_max_distance = 300.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="sun"]
 anims/sun = SubResource( 2 )
@@ -134,10 +131,9 @@ frames = SubResource( 5 )
 animation = "idle"
 
 [node name="Camera" type="Camera" parent="cursor"]
-transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 64, 64 )
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866026, 0, -0.866026, 0.5, 0, 128, 64 )
 current = true
-fov = 110.0
-far = 512.0
+far = 256.0
 
 [node name="spam" type="Spatial" parent="."]
 

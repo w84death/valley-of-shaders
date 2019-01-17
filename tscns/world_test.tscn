@@ -131,12 +131,12 @@ __meta__ = {
 
 [node name="sun" type="DirectionalLight" parent="."]
 editor/display_folded = true
-transform = Transform( 0.766044, -0.361237, 0.531679, 0, 0.827146, 0.561985, -0.642788, -0.430506, 0.63363, 0, 40.6346, 0 )
+transform = Transform( 0.766044, -0.167635, -0.620543, 0, -0.965393, 0.260794, -0.642788, -0.19978, -0.739534, 0, 40.6346, 0 )
 light_color = Color( 1, 0.984314, 0.764706, 1 )
 light_energy = 1.5
 light_bake_mode = 2
 shadow_enabled = true
-directional_shadow_mode = 0
+directional_shadow_blend_splits = true
 directional_shadow_max_distance = 512.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="sun"]

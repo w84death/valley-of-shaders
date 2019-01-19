@@ -22,19 +22,20 @@ void vertex() {
 	float h = get_height(VERTEX.xz);
 	color_height = h;
 	float shore_line = step(blue_line, color_height);
-	float mountains_line = smoothstep(1., color_height, white_line);
+	float mountains_line = smoothstep(green_line, white_line, color_height);
 	float ran = texture(noisemap, VERTEX.xz * 8.).x * mountains_factor;
 	h = mix(blue_line, h, shore_line);
-	float anim = mix(sin(TIME*4.+VERTEX.z*.2) * sin(TIME*6.+VERTEX.x*.5), 0., shore_line);
+	float anim = mix(sin(TIME*4.+VERTEX.z*.2) * sin(TIME*6.+VERTEX.x*.4), 0., shore_line);
 	h = h * height_factor + anim;
 	float fh = mix(h, h + ran, mountains_line);
 	VERTEX.y = fh;
+	
 	/*
 	float A = 0.4;
 	float B = 0.2;
 	TANGENT = normalize( vec3(0., get_height(VERTEX.xz + vec2(0.0, B)) - get_height(VERTEX.xz + vec2(0.0, -0.1)), A));
 	BINORMAL = normalize( vec3(A, get_height(VERTEX.xz + vec2(B, 0.0)) - get_height(VERTEX.xz + vec2(-0.1, 0.0)), 0.0));
-	NORMAL = cross(TANGENT, BINORMAL);
+	notEqual(RMAL = cross(TANGENT, BINORMAL);
 	*/
 }
 
@@ -48,18 +49,18 @@ void fragment() {
 	alb.b = mix(alb.b, 1., g_line);
 	
 	float y_line = step(ground_line + ran * .15, color_height);
-	alb.r = mix(0.29, 0.4, y_line);
-	alb.g = mix(0.14, 0.7 - ran * .4, y_line);
+	alb.r = mix(0.2 + ran *.2, 0.4 + ran * .2, y_line);
+	alb.g = mix(0.35 - ran*.3, 0.8 - ran * .5, y_line);
 	alb.b = mix(0., 0.1, y_line);
 	
 	float b_line = step(blue_line, color_height);
-	alb.r = mix(0.3, alb.r, b_line);
-	alb.g = mix(.4, alb.g, b_line);
-	alb.b = mix(1., alb.b, b_line);
+	alb.r = mix(0.2, alb.r, b_line);
+	alb.g = mix(.45, alb.g, b_line);
+	alb.b = mix(.9, alb.b, b_line);
 	
-	EMISSION = mix(vec3(0.), vec3(0.25, 0.25, 1.), g_line);
+	EMISSION = mix(vec3(0.), vec3(.3, .3, 1.), g_line);
 	ALBEDO = alb;
 	SPECULAR = mix(0.5, 1., b_line);
-	ROUGHNESS = mix(0., 1., b_line);
-	METALLIC = 0.;
+	ROUGHNESS =1.;// mix(1., .8, b_line);
+	METALLIC = mix(0.25, 0., b_line);
 }

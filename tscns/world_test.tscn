@@ -32,13 +32,13 @@ tracks/0/keys = {
 
 [sub_resource type="ProceduralSky" id=3]
 
-radiance_size = 0
-sky_top_color = Color( 0.396078, 0.784314, 1, 1 )
+radiance_size = 2
+sky_top_color = Color( 1, 1, 1, 1 )
 sky_horizon_color = Color( 0, 0.674198, 0.792969, 1 )
-sky_curve = 0.146206
-ground_bottom_color = Color( 0.113725, 0.662745, 0.862745, 1 )
+sky_curve = 0.509121
+ground_bottom_color = Color( 0.27451, 0.223529, 0.105882, 1 )
 ground_horizon_color = Color( 0.101961, 0.662745, 0.858824, 1 )
-ground_curve = 0.117128
+ground_curve = 0.331285
 sun_curve = 0.0784588
 texture_size = 0
 
@@ -46,24 +46,31 @@ texture_size = 0
 
 background_mode = 2
 background_sky = SubResource( 3 )
-ambient_light_color = Color( 0.121569, 0.121569, 0.121569, 1 )
-ambient_light_energy = 0.33
+ambient_light_color = Color( 0.666667, 0.666667, 0.666667, 1 )
+ambient_light_energy = 0.1
+ambient_light_sky_contribution = 0.2
 fog_enabled = true
-fog_color = Color( 0.109804, 0.662745, 0.862745, 1 )
+fog_color = Color( 0, 0.703744, 0.832031, 1 )
 fog_depth_begin = 128.0
 fog_depth_end = 386.0
 fog_depth_curve = 2.73207
 fog_transmit_curve = 0.203063
 tonemap_mode = 3
-ss_reflections_max_steps = 139
-ss_reflections_fade_in = 0.332871
-ssao_radius = 2.0
-ssao_intensity = 2.0
-ssao_bias = 0.001
+ss_reflections_fade_in = 0.135188
+ss_reflections_fade_out = 0.637282
+ssao_radius2 = 5.0
+ssao_intensity2 = 8.0
 ssao_light_affect = 1.0
-ssao_quality = 1
-ssao_edge_sharpness = 0.52
-dof_blur_far_distance = 192.0
+ssao_blur = 2
+ssao_edge_sharpness = 2.0
+dof_blur_far_distance = 256.0
+dof_blur_far_amount = 0.12
+dof_blur_near_distance = 18.41
+glow_levels/2 = true
+glow_intensity = 0.37
+glow_strength = 0.97
+glow_bloom = 0.11
+glow_blend_mode = 0
 
 [sub_resource type="Gradient" id=5]
 
@@ -132,12 +139,10 @@ __meta__ = {
 
 [node name="sun" type="DirectionalLight" parent="."]
 editor/display_folded = true
-transform = Transform( 0.766044, -0.167635, -0.620543, 0, -0.965393, 0.260794, -0.642788, -0.19978, -0.739534, 0, 40.6346, 0 )
-light_color = Color( 1, 0.984314, 0.764706, 1 )
-light_energy = 1.5
+transform = Transform( 0.766044, -0.30454, -0.566066, 0, -0.880641, 0.47378, -0.642788, -0.362937, -0.674611, 0, 40.6346, 0 )
 light_bake_mode = 2
 shadow_enabled = true
-directional_shadow_blend_splits = true
+directional_shadow_mode = 0
 directional_shadow_max_distance = 512.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="sun"]
@@ -147,7 +152,7 @@ anims/sun = SubResource( 2 )
 environment = SubResource( 4 )
 
 [node name="cursor" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -70.3396, 31.37, 91.4296 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 64, 0 )
 script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="cursor"]

@@ -1,23 +1,18 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://gds/knight.gd" type="Script" id=1]
-[ext_resource path="res://meshes/frog.mesh" type="ArrayMesh" id=2]
-[ext_resource path="res://mats/frog_noise1.tres" type="Texture" id=3]
-[ext_resource path="res://gds/random_animation_start.gd" type="Script" id=4]
+[ext_resource path="res://shaders/amiga.material" type="Material" id=2]
+[ext_resource path="res://gds/random_animation_start.gd" type="Script" id=3]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="SphereMesh" id=1]
 
-albedo_color = Color( 0, 0.996078, 0.458824, 1 )
-metallic = 0.78
-metallic_specular = 1.0
-metallic_texture = ExtResource( 3 )
-roughness = 0.0
-uv1_scale = Vector3( 16, 16, 16 )
+radial_segments = 16
+rings = 8
 
 [sub_resource type="Animation" id=2]
 
 resource_name = "idle"
-length = 0.75
+length = 6.0
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("body:translation")
@@ -26,10 +21,22 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.5, 0.716666, 0.916666, 1.21667, 1.5, 1.7, 2, 2.21667, 2.41667, 2.71667, 3, 3.2, 3.5, 3.71667, 3.91667, 4.21667, 4.5, 4.7, 5, 5.21667, 5.41667, 5.71667 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 4, 0, 0 ), Vector3( 4, 3, 0 ), Vector3( 4, 0, 0 ) ]
+"values": [ Vector3( 4, 0, 0 ), Vector3( 4, 8.88, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 8.88, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 8.88, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 8.88, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 8.88, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 8.88, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 8.88, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 0, 0 ), Vector3( 4, 8.88, 0 ), Vector3( 4, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("body:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 360, 360, 360 ) ]
 }
 
 [node name="knight" type="Position3D"]
@@ -39,12 +46,12 @@ script = ExtResource( 1 )
 autostart = true
 
 [node name="body" type="MeshInstance" parent="."]
-transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, 3, 0, 0 )
-mesh = ExtResource( 2 )
-material/0 = SubResource( 1 )
+transform = Transform( 2.69856, 0.174038, -1.29904, -1.29904, 0.75, -2.59808, 0.174038, 2.89952, 0.75, 4, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/idle = SubResource( 2 )
-script = ExtResource( 4 )
+script = ExtResource( 3 )
 
 [connection signal="timeout" from="ai_tick" to="." method="_on_Timer_timeout"]

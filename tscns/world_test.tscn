@@ -34,7 +34,7 @@ tracks/0/keys = {
 
 radiance_size = 0
 sky_top_color = Color( 0.396078, 0.784314, 1, 1 )
-sky_horizon_color = Color( 0.964706, 0.980392, 0.839216, 1 )
+sky_horizon_color = Color( 0, 0.674198, 0.792969, 1 )
 sky_curve = 0.146206
 ground_bottom_color = Color( 0.113725, 0.662745, 0.862745, 1 )
 ground_horizon_color = Color( 0.101961, 0.662745, 0.858824, 1 )
@@ -67,8 +67,8 @@ dof_blur_far_distance = 192.0
 
 [sub_resource type="Gradient" id=5]
 
-offsets = PoolRealArray( 0, 0.340426, 0.638298, 1 )
-colors = PoolColorArray( 0.355469, 1, 0.973564, 0, 1, 1, 1, 1, 0, 0.780392, 1, 1, 0.224609, 0, 1, 0 )
+offsets = PoolRealArray( 0, 0.0638298, 0.411348, 0.673759, 1 )
+colors = PoolColorArray( 0.355469, 1, 0.973564, 0, 0.683594, 0.830364, 1, 1, 0.187832, 1, 0.0429688, 1, 0, 0.780392, 1, 1, 0.224609, 0, 1, 0 )
 
 [sub_resource type="GradientTexture" id=6]
 
@@ -85,7 +85,7 @@ curve = SubResource( 7 )
 
 [sub_resource type="ParticlesMaterial" id=9]
 
-spread = 3.0
+spread = 5.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 64.0
 scale_curve = SubResource( 8 )
@@ -121,6 +121,7 @@ default_font = SubResource( 12 )
 
 [node name="world" type="Spatial"]
 script = ExtResource( 1 )
+MAP_HEIGHT_FACTOR = 128
 
 [node name="terrain" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )
@@ -146,24 +147,27 @@ anims/sun = SubResource( 2 )
 environment = SubResource( 4 )
 
 [node name="cursor" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -70.3396, 12.35, 91.4296 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -70.3396, 31.37, 91.4296 )
 script = ExtResource( 3 )
 
 [node name="Camera" type="Camera" parent="cursor"]
-transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 128, 128 )
+transform = Transform( 1, 0, 0, 0, 0.959413, 0.282007, 0, -0.282007, 0.959413, 0, 32, 32 )
 current = true
+fov = 90.0
+size = 128.0
 far = 1024.0
 
-[node name="Particles" type="Particles" parent="cursor"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0 )
-lifetime = 0.5
+[node name="fire" type="Particles" parent="cursor"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 4, 0 )
+amount = 16
+lifetime = 0.25
 preprocess = 1.0
-visibility_aabb = AABB( -4, -4, -4, 8, 8, 64 )
+visibility_aabb = AABB( -4, -4, -4, 8, 8, 32 )
 process_material = SubResource( 9 )
 draw_pass_1 = SubResource( 11 )
 
-[node name="Sprite3D" type="Sprite3D" parent="cursor"]
-transform = Transform( 1, 0, 0, 0, 32, 0, 0, 0, 1, 0, 128, 0 )
+[node name="ray" type="Sprite3D" parent="cursor"]
+transform = Transform( 1, 0, 0, 0, 32, 0, 0, 0, 1, 0, 112, 0 )
 pixel_size = 0.1
 texture = ExtResource( 4 )
 

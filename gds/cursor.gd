@@ -1,7 +1,8 @@
 extends Spatial
 
 export var GAME_MODE = 1
-export var MOVE_FACTOR = 2.0
+export var MOVE_FACTOR = .25
+export var MOVE_Y_FACTOR = 3.0
 
 var move_to
 
@@ -12,6 +13,7 @@ func _process(delta):
 	if move_to != transform.origin:
 		move_to.y = get_parent().get_height(transform.origin)
 		transform.origin += (move_to - transform.origin) * delta * MOVE_FACTOR
+		transform.origin.y += (move_to.y - transform.origin.y) * delta * MOVE_Y_FACTOR
 	
 func _input(event):
 	if Input.is_key_pressed(KEY_ESCAPE):

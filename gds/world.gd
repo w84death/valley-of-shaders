@@ -15,7 +15,9 @@ var height_map
 var counter = 0
 
 func _ready():
-	height_map = heightmap_file.get_noise().get_image(MAP_SIZE[0], MAP_SIZE[1])
+	var noise = heightmap_file.get_noise()
+
+	height_map = noise.get_image(MAP_SIZE[0], MAP_SIZE[1])
 	refresh_units_counter()
 	
 	

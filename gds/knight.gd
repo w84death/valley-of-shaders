@@ -2,6 +2,7 @@ extends Position3D
 
 export var MAP_SIZE = Vector2(1024, 1024)
 export var MOVE_FACTOR = 8.0
+export var MOVE_Y_FACTOR = 4.0
 export var AI_THINKING_LAG_FACTOR = 0.1
 
 var rotate_speed = 4
@@ -24,7 +25,8 @@ func _process(delta):
 	move_to.y = get_parent().get_parent().get_height(transform.origin)
 	if move_to != transform.origin:
 		transform.origin += (move_to - transform.origin) * delta * MOVE_FACTOR
-			
+		transform.origin.y += (move_to.y - transform.origin.y) * delta * MOVE_Y_FACTOR
+				
 func _on_Timer_timeout():
 	ai_make_move()
 

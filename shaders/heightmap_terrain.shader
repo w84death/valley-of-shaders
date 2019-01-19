@@ -8,8 +8,9 @@ varying float color_height;
 uniform sampler2D heightmap;
 uniform sampler2D noisemap;
 uniform float white_line = 0.9;
-uniform float green_line = 0.45;
-uniform float blue_line = 0.35;
+uniform float green_line = 0.35;
+uniform float ground_line = 0.33;
+uniform float blue_line = 0.32;
 
 float get_height(vec2 pos) {
 	pos -= .5 * heightmap_size;
@@ -42,16 +43,23 @@ void fragment() {
 	vec3 alb = vec3(color_height);
 	
 	float g_line = step(green_line + ran * .3, color_height);
-	alb.g *= mix(1.5 - ran*.5, 1., g_line);
-	alb.b *= mix(0.4, 1., g_line);
-	alb *=  mix(1.0 - ran*.7, 1., g_line);
+	alb.r = mix(alb.r, 1.,g_line);
+	alb.g = mix(alb.g, 1., g_line);
+	alb.b = mix(alb.b, 1., g_line);
 	
-	float b_line = step(blue_line + ran * .1, color_height);
+	float y_line = step(ground_line + ran * .15, color_height);
+	alb.r = mix(0.29, 0.4, y_line);
+	alb.g = mix(0.14, 0.7 - ran * .4, y_line);
+	alb.b = mix(0., 0.1, y_line);
+	
+	float b_line = step(blue_line, color_height);
+	alb.r = mix(0.3, alb.r, b_line);
 	alb.g = mix(.4, alb.g, b_line);
 	alb.b = mix(1., alb.b, b_line);
 	
+	EMISSION = mix(vec3(0.), vec3(0.25, 0.25, 1.), g_line);
 	ALBEDO = alb;
-	SPECULAR = 0.5;
-	ROUGHNESS = 1.;
+	SPECULAR = mix(0.5, 1., b_line);
+	ROUGHNESS = mix(0., 1., b_line);
 	METALLIC = 0.;
 }

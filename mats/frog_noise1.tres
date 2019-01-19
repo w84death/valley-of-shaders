@@ -1,6 +1,6 @@
 [gd_resource type="NoiseTexture" load_steps=2 format=2]
 
-[sub_resource type="OpenSimplexNoise" id=3]
+[sub_resource type="OpenSimplexNoise" id=1]
 
 seed = 31
 octaves = 6
@@ -13,5 +13,5 @@ lacunarity = 4.0
 width = 128
 height = 128
 seamless = true
-noise = SubResource( 3 )
+noise = SubResource( 1 )
 

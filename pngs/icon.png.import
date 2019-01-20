@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/hand_1.png-1898c7a2cdf9dbf973367172fc02700f.stex"
+path="res://.import/icon.png-bd81b80f63a07f900ee4dbc4cd3f0261.stex"
 
 [deps]
 
-source_file="res://pngs/hand_1.png"
-dest_files=[ "res://.import/hand_1.png-1898c7a2cdf9dbf973367172fc02700f.stex" ]
+source_file="res://pngs/icon.png"
+dest_files=[ "res://.import/icon.png-bd81b80f63a07f900ee4dbc4cd3f0261.stex" ]
 
 [params]
 
@@ -17,8 +17,8 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
-flags/mipmaps=true
+flags/filter=true
+flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
 process/fix_alpha_border=true

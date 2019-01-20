@@ -25,7 +25,8 @@ void vertex() {
 	float mountains_line = smoothstep(green_line, white_line, color_height);
 	float ran = texture(noisemap, VERTEX.xz * 8.).x * mountains_factor;
 	h = mix(blue_line, h, shore_line);
-	float anim = mix(sin(TIME*4.+VERTEX.z*.2) * sin(TIME*6.+VERTEX.x*.4), 0., shore_line);
+	float waves_factor = 1.;
+	float anim = mix(sin(TIME * 2. + VERTEX.z * ran) * cos(TIME * 2. + VERTEX.x * ran) * waves_factor, 0., shore_line);
 	h = h * height_factor + anim;
 	float fh = mix(h, h + ran, mountains_line);
 	VERTEX.y = fh;
@@ -49,18 +50,20 @@ void fragment() {
 	alb.b = mix(alb.b, 1., g_line);
 	
 	float y_line = step(ground_line + ran * .15, color_height);
-	alb.r = mix(0.2 + ran *.2, 0.4 + ran * .2, y_line);
-	alb.g = mix(0.35 - ran*.3, 0.8 - ran * .5, y_line);
-	alb.b = mix(0., 0.1, y_line);
+	alb.r = mix(.2 + ran *.3, 	.3 - ran * .1, y_line);
+	alb.g = mix(.2 + ran *.3, 	.9 - ran * .1, y_line);
+	alb.b = mix(.1 + ran *.2, 	0.1, y_line);
 	
 	float b_line = step(blue_line, color_height);
-	alb.r = mix(0.2, alb.r, b_line);
-	alb.g = mix(.45, alb.g, b_line);
-	alb.b = mix(.9, alb.b, b_line);
+	alb.r = mix(.0 + ran * .05, alb.r, b_line);
+	alb.g = mix(.2 + ran * .05, alb.g, b_line);
+	alb.b = mix(.7, alb.b, b_line);
 	
-	EMISSION = mix(vec3(0.), vec3(.3, .3, 1.), g_line);
+	EMISSION = mix(vec3(0.), vec3(.1, .2, 1.), g_line);
+	TRANSMISSION = mix(vec3(0.), vec3(.3, .3, 1.), g_line);
+	TRANSMISSION += mix(vec3(color_height * ran * 8.), vec3(0.), b_line);
 	ALBEDO = alb;
-	SPECULAR = mix(0.5, 1., b_line);
-	ROUGHNESS =1.;// mix(1., .8, b_line);
-	METALLIC = mix(0.25, 0., b_line);
+	SPECULAR = mix(1., .4, b_line);
+	ROUGHNESS = 1.;
+	METALLIC = mix(0.3, 0., b_line);
 }

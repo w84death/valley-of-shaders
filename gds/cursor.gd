@@ -1,51 +1,124 @@
-extends Spatial
+extends Position3D
 
-export var GAME_MODE = 1
-export var MOVE_FACTOR = .25
-export var MOVE_Y_FACTOR = 3.0
+export var rotate_speed = 1.0;
+export var move_speed = 1.0;
+export var move_speed_lr = 0.5;
+export var move_speed_fb = 1.5;
 
-var move_to
+var active_camera = 0
+onready var cameras = [
+	$"camera_drone",
+	$"camera_satelite",
+	$"boat/camera_onboard"
+]
+const DEADZONE = 0.15;
+
+var angle_x = 0;
+var angle_y = 250;
+
+var _angle_x = 0;
+var _angle_y = 250;
+
+var move_to;
+var w = 0
+var axis_value;
 
 func _ready():
 	move_to = transform.origin
 
 func _process(delta):
+	if angle_x != _angle_x or angle_y != _angle_y:
+		_angle_x += (angle_x - _angle_x) * delta * 10.0;
+		_angle_y += (angle_y - _angle_y) * delta * 10.0;
+
+		var basis = Basis(Vector3(0.0, 1.0, 0.0), deg2rad(_angle_y))
+		basis *= Basis(Vector3(1.0, 0.0, 0.0), deg2rad(_angle_x))
+		transform.basis = basis
+		
 	if move_to != transform.origin:
 		move_to.y = get_parent().get_height(transform.origin)
-		transform.origin += (move_to - transform.origin) * delta * MOVE_FACTOR
-		transform.origin.y += (move_to.y - transform.origin.y) * delta * MOVE_Y_FACTOR
-	
-func _input(event):
-	if Input.is_key_pressed(KEY_ESCAPE):
-		get_tree().quit()
-	if Input.is_key_pressed(KEY_C):
-		cinematic_mode()
-
-	if GAME_MODE > 0:
-		if Input.is_action_pressed("game_up"):
-			move_forward()
-		if Input.is_action_pressed("game_down"):
-			move_backward()
-		if Input.is_action_pressed("game_left"):
-			move_left()
-		if Input.is_action_pressed("game_right"):
-			move_right()
-
-		if Input.is_action_pressed("game_x"):
-			select_x()
+		transform.origin += (move_to - transform.origin) * delta * 10.0
 		
-		if Input.is_action_pressed("game_a"):
-			select_a()
+func _input(event):
+	if Input.is_action_pressed("game_left"):
+		angle_y += rotate_speed
+	if Input.is_action_pressed("game_right"):
+		angle_y -= rotate_speed
+	if Input.is_action_pressed("game_up"):
+		var front_back = transform.basis.z
+		front_back.y = 0.0
+		front_back = front_back.normalized()
+		move_to -= front_back * move_speed;
+	if Input.is_action_pressed("game_down"):
+		var front_back = transform.basis.z
+		front_back.y = 0.0
+		front_back = front_back.normalized()
+		move_to += front_back * move_speed;
+	if Input.is_key_pressed(KEY_ESCAPE):
+		quit_game()
+	if Input.is_action_pressed("game_a"):
+		select_a()
+	if Input.is_action_pressed("game_x"):
+		select_x()
+		
+func _physics_process(delta):
+	for axis in range(JOY_AXIS_0, JOY_AXIS_MAX):
+		axis_value = Input.get_joy_axis(0, axis)
+		var axis_abs = abs(axis_value)
+		if axis_abs > DEADZONE:
+			# ROTATE LEFT - RIGHT
+			if axis == JOY_ANALOG_RX:
+				if axis_value > 0:
+					angle_y -= rotate_speed * axis_abs
+				else:
+					angle_y += rotate_speed * axis_abs
+					
+			# ROTATE ..THE OTEHR WAY :P
+			##
+			#if axis == JOY_ANALOG_RY:
+			#	if axis_value > 0:
+			#		if angle_x > -25:
+			#			angle_x -= rotate_speed * axis_abs
+			#	else:
+			#		if angle_x < 25:
+			#			angle_x += rotate_speed * axis_abs
 
-func move_forward(): move_to.z -= 4
-func move_backward(): move_to.z += 4
-func move_left(): move_to.x -= 4
-func move_right(): move_to.x += 4
+			# MOVE LEFT - RIGHT
+			#if axis == JOY_ANALOG_LX:
+			#	if axis_value < 0:
+			#		var left_right = transform.basis.x
+			#		left_right.y = 0.0
+			#		left_right = left_right.normalized()
+			#		move_to -= left_right * move_speed_lr * axis_abs;
+			#	else:
+			#		var left_right = transform.basis.x
+			#		left_right.y = 0.0
+			#		left_right = left_right.normalized()
+			#		move_to += left_right * move_speed_lr * axis_abs;
 
-func cinematic_mode(): return
+			# MOVE FRONT - BACK
+			if axis == JOY_ANALOG_LY:
+				if axis_value < 0:
+					var front_back = transform.basis.z
+					front_back.y = 0.0
+					front_back = front_back.normalized()
+					move_to -= front_back * move_speed_fb * abs(axis_value);
+				else:
+					var front_back = transform.basis.z
+					front_back.y = 0.0
+					front_back = front_back.normalized()
+					move_to += front_back * move_speed_fb * abs(axis_value);
+
+		
 func select_a():
-	for i in 126:
-		get_parent().spawn_unit(0, transform.origin)
+	get_parent().change_map_seed()
 	
 func select_x():
-	get_parent().change_map_seed()
+	active_camera += 1
+	if active_camera > 2:
+		active_camera = 0
+	
+	cameras[active_camera].set_current(true)
+	
+func quit_game():
+	get_tree().quit()

@@ -2,16 +2,14 @@
 
 [sub_resource type="OpenSimplexNoise" id=1]
 
-seed = 31
+seed = 46
 octaves = 6
-period = 38.9
+period = 75.5
 persistence = 0.553
 lacunarity = 4.0
 
 [resource]
 
-width = 128
-height = 128
 seamless = true
 noise = SubResource( 1 )
 

@@ -2,11 +2,8 @@
 
 [sub_resource type="OpenSimplexNoise" id=1]
 
-seed = 18
-octaves = 4
-period = 51.5
-persistence = 0.0
-lacunarity = 1.55
+seed = 30
+period = 139.9
 
 [resource]
 

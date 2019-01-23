@@ -31,7 +31,7 @@ void vertex() {
 
 	h = h * HEIGHT_FACTOR + anim;
 	float fh = mix(h, h + ran, mountains_line);
-	VERTEX.y = fh;
+	VERTEX.y = h;
 }
 
 void fragment() {
@@ -39,16 +39,19 @@ void fragment() {
 	float ran2 = texture(noisemap, UV * GRASS_UV_FACTOR * 32.).x;
 	vec3 alb = vec3(color_height);
 	
-	float g_line = step(green_line + ran * .3, color_height);
-	alb.r = mix(alb.r, 1.,g_line);
-	alb.g = mix(alb.g, 1., g_line);
-	alb.b = mix(alb.b, 1., g_line);
-	
+	// sand (yellow) vs grass (green)
 	float y_line = step(ground_line + ran * .15, color_height);
 	alb.r = mix(.2 + ran *.3, 	(.3 - ran * .1) * ran2, 	y_line);
 	alb.g = mix(.3 + ran *.2, 	(.9 - ran * .1) * ran2, 	y_line);
 	alb.b = mix(.2 + ran *.2, 	(0.1) * ran2, 				y_line);
 	
+	// rest vs white top
+	float g_line = step(green_line + ran * .3, color_height);
+	alb.r = mix(alb.r, 1., g_line);
+	alb.g = mix(alb.g, 1., g_line);
+	alb.b = mix(alb.b, 1., g_line);
+	
+	// water (blue) vs rest
 	float b_line = step(blue_line, color_height);
 	alb.r = mix(.0 + ran * .05, 	alb.r, b_line);
 	alb.g = mix(.2 + ran * .05, 	alb.g, b_line);
@@ -57,9 +60,11 @@ void fragment() {
 	EMISSION = mix(vec3(0.), vec3(.1, .2, 1.), g_line);
 	TRANSMISSION = mix(vec3(0.), vec3(.3, .3, 1.), g_line);
 	TRANSMISSION += mix(vec3(color_height * ran * 8.), vec3(0.), b_line);
+	TRANSMISSION += mix(vec3(.5, 0.8, .2), TRANSMISSION, g_line);
+	
+	SPECULAR = mix(1., .4, b_line);
+	ROUGHNESS = .7;
+	METALLIC = mix(0.3, 0., b_line);
 	
 	ALBEDO = alb;
-	SPECULAR = mix(1., .4, b_line);
-	ROUGHNESS = 1.;
-	METALLIC = mix(0.3, 0., b_line);
 }

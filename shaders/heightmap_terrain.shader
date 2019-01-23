@@ -30,7 +30,7 @@ void vertex() {
 	float ran = texture(noisemap, VERTEX.xz * 8.).x * MOUNTAINS_FACTOR;
 	h = mix(blue_line, h, shore_line);
 	VERTEX.y = h * HEIGHT_FACTOR ;
-	float anim = mix(sin(TIME * color_height * 2.5) * cos(TIME * color_height * 4.5), 0., shore_line);
+	float anim = mix(.2 * sin(TIME * color_height * 1.5) + .6 * cos(TIME * color_height * 4.5), 0., shore_line);
 
 	h = h * HEIGHT_FACTOR + anim;
 	float fh = mix(h, h + ran, mountains_line);
@@ -58,8 +58,8 @@ void fragment() {
 	// water (blue) vs rest
 	float b_line = step(blue_line, color_height);
 	alb.r = mix(.0 + ran * .05, 	alb.r, b_line);
-	alb.g = mix(.2 + ran * .05, 	alb.g, b_line);
-	alb.b = mix(.4, 				alb.b, b_line);
+	alb.g = mix(.2 + ran * .15, 	alb.g, b_line);
+	alb.b = mix(.6, 				alb.b, b_line);
 	
 	EMISSION = mix(vec3(0.), vec3(.1, .2, 1.), g_line);
 	TRANSMISSION = mix(vec3(0.), vec3(.3, .3, 1.), g_line);

@@ -96,8 +96,6 @@ dof_blur_far_distance = 512.0
 dof_blur_far_amount = 0.06
 dof_blur_far_quality = 0
 dof_blur_near_distance = 18.41
-glow_enabled = true
-glow_bloom = 0.4
 
 [sub_resource type="CapsuleMesh" id=6]
 

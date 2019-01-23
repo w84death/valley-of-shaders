@@ -2,10 +2,14 @@
 
 [sub_resource type="OpenSimplexNoise" id=1]
 
-seed = 37
+seed = 99
+period = 16.0
+persistence = 0.2
 
 [resource]
 
+width = 1024
+height = 1024
 seamless = true
 noise = SubResource( 1 )
 

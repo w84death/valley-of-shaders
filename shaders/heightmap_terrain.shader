@@ -23,15 +23,19 @@ float get_height(vec2 pos) {
 void vertex() {
 	float h = get_height(VERTEX.xz);
 	color_height = h;
+	
+	
 	float shore_line = step(blue_line, color_height);
 	float mountains_line = smoothstep(green_line, white_line, color_height);
 	float ran = texture(noisemap, VERTEX.xz * 8.).x * MOUNTAINS_FACTOR;
 	h = mix(blue_line, h, shore_line);
+	VERTEX.y = h * HEIGHT_FACTOR ;
 	float anim = mix(sin(TIME * 2. + VERTEX.z * ran) * cos(TIME * 2. + VERTEX.x * ran), 0., shore_line);
 
 	h = h * HEIGHT_FACTOR + anim;
 	float fh = mix(h, h + ran, mountains_line);
-	VERTEX.y = h;
+
+	VERTEX.y = fh;
 }
 
 void fragment() {

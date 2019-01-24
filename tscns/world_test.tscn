@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://gds/world.gd" type="Script" id=1]
 [ext_resource path="res://oggs/joungle_back1.ogg" type="AudioStream" id=2]
@@ -12,11 +12,12 @@
 [ext_resource path="res://meshes/chest_top.mesh" type="ArrayMesh" id=10]
 [ext_resource path="res://pngs/blur_light.png" type="Texture" id=11]
 [ext_resource path="res://gds/dock.gd" type="Script" id=12]
-[ext_resource path="res://gds/cursor.gd" type="Script" id=13]
-[ext_resource path="res://mats/wood.material" type="Material" id=14]
-[ext_resource path="res://mats/softbody.material" type="Material" id=15]
-[ext_resource path="res://fnts/CompassPro.ttf" type="DynamicFontData" id=16]
-[ext_resource path="res://gds/fps.gd" type="Script" id=17]
+[ext_resource path="res://meshes/trap1.tscn" type="PackedScene" id=13]
+[ext_resource path="res://meshes/barrel.tscn" type="PackedScene" id=14]
+[ext_resource path="res://gds/cursor.gd" type="Script" id=15]
+[ext_resource path="res://meshes/boat.tscn" type="PackedScene" id=16]
+[ext_resource path="res://fnts/CompassPro.ttf" type="DynamicFontData" id=17]
+[ext_resource path="res://gds/fps.gd" type="Script" id=18]
 
 [sub_resource type="PlaneMesh" id=1]
 
@@ -97,104 +98,17 @@ dof_blur_far_amount = 0.06
 dof_blur_far_quality = 0
 dof_blur_near_distance = 18.41
 
-[sub_resource type="CapsuleMesh" id=6]
-
-material = ExtResource( 14 )
-radial_segments = 16
-rings = 4
-
-[sub_resource type="CapsuleMesh" id=7]
-
-material = ExtResource( 14 )
-radial_segments = 16
-rings = 4
-
-[sub_resource type="CubeMesh" id=8]
-
-material = ExtResource( 14 )
-size = Vector3( 2, 0.74, 3.91 )
-
-[sub_resource type="CubeMesh" id=9]
-
-material = ExtResource( 14 )
-size = Vector3( 2.35, 0.79, 3.71 )
-
-[sub_resource type="CubeMesh" id=10]
-
-material = ExtResource( 14 )
-size = Vector3( 0.88, 0.32, 0.75 )
-
-[sub_resource type="CylinderMesh" id=11]
-
-material = ExtResource( 14 )
-top_radius = 0.05
-bottom_radius = 0.1
-radial_segments = 8
-rings = 2
-
-[sub_resource type="CylinderMesh" id=12]
-
-material = ExtResource( 14 )
-top_radius = 0.05
-bottom_radius = 0.05
-height = 1.6
-radial_segments = 8
-rings = 2
-
-[sub_resource type="CylinderMesh" id=13]
-
-material = ExtResource( 14 )
-top_radius = 0.05
-bottom_radius = 0.05
-height = 1.0
-radial_segments = 8
-rings = 2
-
-[sub_resource type="PlaneMesh" id=14]
-
-size = Vector2( 1.35, 0.95 )
-subdivide_width = 16
-subdivide_depth = 16
-
-[sub_resource type="PlaneMesh" id=15]
-
-size = Vector2( 1.09, 0.54 )
-subdivide_width = 16
-subdivide_depth = 16
-
-[sub_resource type="CubeMesh" id=16]
-
-material = ExtResource( 14 )
-size = Vector3( 0.2, 0.6, 0.4 )
-
-[sub_resource type="Animation" id=17]
-
-length = 4.0
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:rotation_degrees")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.7, 1.5, 2.2, 2.9, 3.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( -0.93, 0, -2.68 ), Vector3( 0.37, 0, 1.73 ), Vector3( 0, 0, 0 ), Vector3( -2.47, 0, -2.09 ), Vector3( 0.37, 0, 1.73 ) ]
-}
-
-[sub_resource type="DynamicFont" id=18]
+[sub_resource type="DynamicFont" id=6]
 
 size = 12
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 use_filter = true
-font_data = ExtResource( 16 )
+font_data = ExtResource( 17 )
 
-[sub_resource type="Theme" id=19]
+[sub_resource type="Theme" id=7]
 
-default_font = SubResource( 18 )
+default_font = SubResource( 6 )
 
 [node name="world" type="Spatial"]
 script = ExtResource( 1 )
@@ -259,6 +173,18 @@ anims/open = SubResource( 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 51, 0 )
 script = ExtResource( 12 )
 
+[node name="trap1" parent="terrain" instance=ExtResource( 13 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 58.1849, 0 )
+
+[node name="trap2" parent="terrain" instance=ExtResource( 13 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 49.4809, 58.1849, 50.3295 )
+
+[node name="trap3" parent="terrain" instance=ExtResource( 13 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 94.5031, 58.1849, 1.1373 )
+
+[node name="barrel" parent="terrain" instance=ExtResource( 14 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.4041, 51.4163, 29.5308 )
+
 [node name="sun" type="DirectionalLight" parent="."]
 editor/display_folded = true
 transform = Transform( 0.513691, -0.491255, -0.703412, -7.16737e-08, -0.819851, 0.572575, -0.857975, -0.294126, -0.42115, 0, 128, 0 )
@@ -277,14 +203,14 @@ environment = SubResource( 5 )
 
 [node name="cursor" type="Position3D" parent="."]
 transform = Transform( -0.34202, 0, -0.939693, 0, 1, 0, 0.939693, 0, -0.34202, -28.991, 51.19, -7.545 )
-script = ExtResource( 13 )
+script = ExtResource( 15 )
 move_speed_lr = 0.2
 move_speed_fb = 0.8
 
 [node name="camera_drone" type="Camera" parent="cursor"]
-transform = Transform( 1, -1.8794e-13, 2.91029e-11, 1.8794e-13, 1, -5.42111e-20, -2.91029e-11, 5.42166e-20, 1, -7.45058e-08, 8, 24 )
+transform = Transform( 1, -1.8794e-13, 2.91029e-11, 1.8794e-13, 1, -5.42111e-20, -2.91029e-11, 5.42166e-20, 1, 0, 12, 32 )
 current = true
-fov = 50.0
+fov = 60.0
 size = 128.0
 far = 1024.0
 
@@ -293,70 +219,13 @@ transform = Transform( 1, 0, 0, 0, 0.819152, 0.573577, 0, -0.573577, 0.819152, 0
 size = 128.0
 far = 2048.0
 
-[node name="boat" type="CSGMesh" parent="cursor"]
-editor/display_folded = true
-transform = Transform( 1.99909, -0.060379, -2.90906e-11, 0.0603777, 1.99905, -0.0129153, 0.000389906, 0.0129094, 1.99996, 0, 0.7, 0 )
-mesh = SubResource( 6 )
-
-[node name="inisde_hull" type="CSGMesh" parent="cursor/boat"]
-transform = Transform( 0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0.294518, 0 )
-operation = 2
-mesh = SubResource( 7 )
-
-[node name="floor" type="CSGMesh" parent="cursor/boat/inisde_hull"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.887367, 0.319148 )
-operation = 2
-mesh = SubResource( 8 )
-
-[node name="remove_top" type="CSGMesh" parent="cursor/boat"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50721, 0 )
-operation = 2
-mesh = SubResource( 9 )
-
-[node name="control_room" type="CSGMesh" parent="cursor/boat"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0381699, 0.592715 )
-mesh = SubResource( 10 )
-
-[node name="vertical" type="CSGMesh" parent="cursor/boat/control_room"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0935, 0.037962 )
-mesh = SubResource( 11 )
-
-[node name="hori_long" type="CSGMesh" parent="cursor/boat/control_room/vertical"]
-transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.207512, 0 )
-mesh = SubResource( 12 )
-
-[node name="hori_short" type="CSGMesh" parent="cursor/boat/control_room/vertical"]
-transform = Transform( -3.6178e-08, -1, -1.45519e-11, 1, -3.83294e-08, -4.65661e-10, 9.31323e-10, -4.36557e-11, 1, 0.00617066, 0.870648, -0.00131989 )
-mesh = SubResource( 13 )
-
-[node name="MeshInstance" type="MeshInstance" parent="cursor/boat"]
-transform = Transform( 1, -1.45519e-11, -4.39275e-08, -2.8727e-08, -4.56348e-08, -1, 2.76486e-10, 1, -5.02914e-08, 0.0266402, 0.882034, 0.443103 )
-mesh = SubResource( 14 )
-material/0 = ExtResource( 15 )
-
-[node name="MeshInstance2" type="MeshInstance" parent="cursor/boat"]
-transform = Transform( 1, 1.45519e-11, -5.32417e-08, -3.61774e-08, -4.56348e-08, -1, 3.49246e-10, 1, -5.21541e-08, 0.0517771, 1.71428, 0.437728 )
-mesh = SubResource( 15 )
-material/0 = ExtResource( 15 )
-
-[node name="steer" type="CSGMesh" parent="cursor/boat"]
-transform = Transform( 1, 1.78403e-08, 0, -1.56886e-08, 1, -1.39698e-09, 1.74623e-10, 3.72529e-09, 1, -0.0111566, -0.369377, 1.49716 )
-mesh = SubResource( 16 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="cursor/boat"]
-autoplay = "on_water"
-anims/on_water = SubResource( 17 )
-
-[node name="camera_onboard" type="Camera" parent="cursor/boat"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31, 0 )
-fov = 75.0
-size = 128.0
-far = 1024.0
+[node name="boat" parent="cursor" instance=ExtResource( 16 )]
+transform = Transform( 3.99818, -0.120758, -1.19209e-07, 0.120755, 3.99809, -0.0258305, 0.000779986, 0.0258187, 3.99992, 0, 2.10812, 0 )
 
 [node name="HUD" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = SubResource( 19 )
+theme = SubResource( 7 )
 
 [node name="counter" type="Label" parent="HUD"]
 margin_left = 5.0
@@ -371,5 +240,5 @@ margin_top = 15.0
 margin_right = 47.0
 margin_bottom = 30.0
 text = "60fps"
-script = ExtResource( 17 )
+script = ExtResource( 18 )
 

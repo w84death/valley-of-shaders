@@ -1,0 +1,109 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://mats/wood.material" type="Material" id=1]
+[ext_resource path="res://mats/steel.material" type="Material" id=2]
+
+[sub_resource type="CylinderMesh" id=1]
+
+material = ExtResource( 1 )
+top_radius = 2.0
+bottom_radius = 2.0
+height = 6.0
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id=2]
+
+material = ExtResource( 2 )
+top_radius = 2.5
+bottom_radius = 2.5
+height = 0.5
+radial_segments = 16
+rings = 2
+
+[sub_resource type="CylinderMesh" id=3]
+
+material = ExtResource( 2 )
+top_radius = 0.001
+bottom_radius = 0.75
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id=4]
+
+material = ExtResource( 1 )
+height = 8.0
+radial_segments = 8
+
+[sub_resource type="Animation" id=5]
+
+resource_name = "rotate"
+length = 4.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 360, 0 ) ]
+}
+
+[node name="trap1" type="CSGMesh"]
+editor/display_folded = true
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
+mesh = SubResource( 1 )
+
+[node name="ring-top" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
+mesh = SubResource( 2 )
+
+[node name="ring-middle" type="CSGMesh" parent="."]
+mesh = SubResource( 2 )
+
+[node name="ring-bottom" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0 )
+mesh = SubResource( 2 )
+
+[node name="spike-1" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.25, 2.5 )
+mesh = SubResource( 3 )
+
+[node name="spike-2" type="CSGMesh" parent="."]
+transform = Transform( -4.37114e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, -4.37114e-08, 1.91069e-15, -2.5, 1.25, 0 )
+mesh = SubResource( 3 )
+
+[node name="spike-3" type="CSGMesh" parent="."]
+transform = Transform( -4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 2.5, 1.25, 0 )
+mesh = SubResource( 3 )
+
+[node name="spike-4" type="CSGMesh" parent="."]
+transform = Transform( -1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, 0, 1.25, -2.5 )
+mesh = SubResource( 3 )
+
+[node name="spike-5" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -1.75, 2.5 )
+mesh = SubResource( 3 )
+
+[node name="spike-6" type="CSGMesh" parent="."]
+transform = Transform( -4.37114e-08, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, -4.37114e-08, 1.91069e-15, -2.5, -1.75, 0 )
+mesh = SubResource( 3 )
+
+[node name="spike-7" type="CSGMesh" parent="."]
+transform = Transform( -4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 2.5, -1.75, 0 )
+mesh = SubResource( 3 )
+
+[node name="spike-8" type="CSGMesh" parent="."]
+transform = Transform( -1, -1.19209e-07, 7.10543e-15, 0, -4.37114e-08, -1, 1.19209e-07, -1, 4.37114e-08, 0, -1.75, -2.5 )
+mesh = SubResource( 3 )
+
+[node name="main post" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.19111, 0 )
+mesh = SubResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "rotate"
+anims/rotate = SubResource( 5 )
+

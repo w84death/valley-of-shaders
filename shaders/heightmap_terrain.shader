@@ -13,6 +13,7 @@ uniform float white_line = 0.9;
 uniform float green_line = 0.35;
 uniform float ground_line = 0.33;
 uniform float blue_line = 0.32;
+uniform float GOLDEN_ANGLE_RADIAN = 2.39996;
 
 float get_height(vec2 pos) {
 	pos -= .5 * HEIGHTMAP_SIZE;
@@ -20,21 +21,41 @@ float get_height(vec2 pos) {
 	return texture(heightmap, pos).r;
 }
 
+float wave(vec2 uv, vec2 emitter, float speed, float phase, float iTime){
+	float dst = distance(uv, emitter);
+	return pow((0.5 + 0.5 * sin(dst * phase - iTime * speed)), 5.0);
+}
+
+float get_waves(vec2 uv, float iTime){
+	float w = 0.0;
+	float sw = 0.0;
+	float iter = 0.0;
+	float ww = 1.0;
+	uv += iTime * 0.5;
+	for(int i=0;i<6;i++){
+		w += ww * wave(uv * 0.06 , vec2(sin(iter), cos(iter)) * 10.0, 2.0 + iter * 0.08, 2.0 + iter * 3.0, iTime);
+		sw += ww;
+		ww = mix(ww, 0.0115, 0.4);
+		iter += GOLDEN_ANGLE_RADIAN;
+	}
+	
+	return w / sw;
+}
+
 void vertex() {
 	float h = get_height(VERTEX.xz);
 	color_height = h;
-	
 	
 	float shore_line = step(blue_line, color_height);
 	float mountains_line = smoothstep(green_line, white_line, color_height);
 	float ran = texture(noisemap, VERTEX.xz * 8.).x * MOUNTAINS_FACTOR;
 	h = mix(blue_line, h, shore_line);
-	VERTEX.y = h * HEIGHT_FACTOR ;
-	float anim = mix(.2 * sin(TIME * color_height * 1.5) + .6 * cos(TIME * color_height * 4.5), 0., shore_line);
-
+	
+	float w = get_waves(VERTEX.xz, TIME) * 2.;
+	float anim = mix(w, 0., shore_line);
+	
 	h = h * HEIGHT_FACTOR + anim;
 	float fh = mix(h, h + ran, mountains_line);
-
 	VERTEX.y = fh;
 }
 

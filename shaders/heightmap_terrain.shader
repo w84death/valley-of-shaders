@@ -21,25 +21,32 @@ float get_height(vec2 pos) {
 	return texture(heightmap, pos).r;
 }
 
-float wave(vec2 uv, vec2 emitter, float speed, float phase, float iTime){
-	float dst = distance(uv, emitter);
-	return pow((0.5 + 0.5 * sin(dst * phase - iTime * speed)), 5.0);
+vec2 wavedx(vec2 position, vec2 direction, float speed, float frequency, float timeshift) {
+	float x = dot(direction, position) * frequency + timeshift * speed;
+	float wave = exp(sin(x) - 1.0);
+	float dx = wave * cos(x);
+	return vec2(wave, -dx);
 }
 
-float get_waves(vec2 uv, float iTime){
-	float w = 0.0;
-	float sw = 0.0;
+float get_waves(vec2 position, int iterations, float Time){
 	float iter = 0.0;
-	float ww = 1.0;
-	uv += iTime * 0.5;
-	for(int i=0;i<6;i++){
-		w += ww * wave(uv * 0.06 , vec2(sin(iter), cos(iter)) * 10.0, 2.0 + iter * 0.08, 2.0 + iter * 3.0, iTime);
-		sw += ww;
-		ww = mix(ww, 0.0115, 0.4);
-		iter += GOLDEN_ANGLE_RADIAN;
+	float phase = 6.0;
+	float speed = 2.0;
+	float weight = 1.0;
+	float w = 0.0;
+	float ws = 0.0;
+	for(int i=0;i<iterations;i++){
+		vec2 p = vec2(sin(iter), cos(iter));
+		vec2 res = wavedx(position, p, speed, phase, Time);
+		position += normalize(p) * res.y * weight * 0.048;
+		w += res.x * weight;
+		iter += 12.0;
+		ws += weight;
+		weight = mix(weight, 0.0, 0.2);
+		phase *= 1.18;
+		speed *= 1.07;
 	}
-	
-	return w / sw;
+	return w / ws;
 }
 
 void vertex() {
@@ -51,7 +58,7 @@ void vertex() {
 	float ran = texture(noisemap, VERTEX.xz * 8.).x * MOUNTAINS_FACTOR;
 	h = mix(blue_line, h, shore_line);
 	
-	float w = get_waves(VERTEX.xz, TIME) * 2.;
+	float w = -2.5 + get_waves(VERTEX.xz * .04, 16, TIME) * 5.;
 	float anim = mix(w, 0., shore_line);
 	
 	h = h * HEIGHT_FACTOR + anim;

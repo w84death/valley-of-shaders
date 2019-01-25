@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://mats/gold.material" type="Material" id=1]
+[ext_resource path="res://gds/random_animation_start.gd" type="Script" id=2]
+
+[sub_resource type="CylinderMesh" id=3]
+
+material = ExtResource( 1 )
+top_radius = 0.9
+bottom_radius = 0.9
+height = 0.4
+radial_segments = 12
+rings = 1
+
+[sub_resource type="CylinderMesh" id=2]
+
+material = ExtResource( 1 )
+top_radius = 0.75
+bottom_radius = 0.75
+height = 0.2
+radial_segments = 12
+rings = 1
+
+[sub_resource type="Animation" id=4]
+
+resource_name = "idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 90, 0, 0 ), Vector3( 90, 360, 0 ) ]
+}
+
+[node name="coin" type="Spatial"]
+
+[node name="CSGMesh3" type="CSGMesh" parent="."]
+transform = Transform( 0.969756, 0.244077, -1.06689e-08, 0, -4.37114e-08, -1, -0.244077, 0.969756, -4.23894e-08, 0, 0, 0 )
+mesh = SubResource( 3 )
+
+[node name="CSGMesh" type="CSGMesh" parent="CSGMesh3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0 )
+operation = 2
+mesh = SubResource( 2 )
+
+[node name="CSGMesh2" type="CSGMesh" parent="CSGMesh3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0 )
+operation = 2
+mesh = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CSGMesh3"]
+anims/idle = SubResource( 4 )
+script = ExtResource( 2 )
+

@@ -9,9 +9,6 @@ shader_type particles;
 
 // SETTINGS --------------------------------------------------------------------
 
-// SET RANDOM FLOAT FOR EACH VEGETATION TYPE
-uniform float SEED = 0.1234;
-
 // TERRAIN SETTINGS
 uniform float TERRAIN_HEIGHT_SCALE = 64.0;
 uniform float TERRAIN_MIN_H = 0.4;
@@ -53,15 +50,17 @@ mat4 enterTheMatrix(vec3 pos, vec3 axis, float angle, float SCALE){
                 vec4(pos.x,									pos.y,								pos.z,								1.0));
 }
 
+float fake_random(vec2 p){
+    return fract(sin(dot(p.xy, vec2(12.9898,78.233))) * 43758.5453);
+}
+
 // VERTEX ----------------------------------------------------------------------
 
 void vertex() {
-
 	vec3 pos = vec3(0.0, 0.0, 0.0);
 	pos.z = float(INDEX);
 	pos.x = mod(pos.z, GRASS_ROWS);
 	pos.z = (pos.z - pos.x) / GRASS_ROWS; // obtain our position based on which particle we're rendering
-
 
 	pos.x -= GRASS_ROWS * 0.5;
 	pos.z -= GRASS_ROWS * 0.5; // center
@@ -71,10 +70,10 @@ void vertex() {
 	pos.x += (EMISSION_TRANSFORM[3][0] - mod(EMISSION_TRANSFORM[3][0], GRASS_SPACING));
 	pos.z += (EMISSION_TRANSFORM[3][2] - mod(EMISSION_TRANSFORM[3][2], GRASS_SPACING));
 
-	vec2 noise = texture(NOISE_MAP, pos.xz).xy; // generate some noise based on our _world_ position
-
-	pos.x += (-6. + noise.x * 12.0 ) * GRASS_SPACING;
-	pos.z += (-6. + noise.y * 12.0 ) * GRASS_SPACING; // apply noise and spacing
+	float ran = fake_random(pos.xz);
+	
+	pos.x += ran * GRASS_SPACING;
+	pos.z += ran * GRASS_SPACING; // apply noise and spacing
 	pos.y = get_height(pos.xz); // apply height
 
 	vec2 feat_pos = pos.xz;
@@ -87,16 +86,15 @@ void vertex() {
 	}
 	
 	pos.y *= TERRAIN_HEIGHT_SCALE;
-	pos.y -= 2. + noise.x * 4.0;
 	
 	// calculate random scaling but within min/max
-	float scale = mix(GRASS_SCALE_MIN, GRASS_SCALE_MAX, noise.x * .5);
+	float scale = mix(GRASS_SCALE_MIN, GRASS_SCALE_MAX, ran);
 
 	// do the final transformation
 	TRANSFORM = enterTheMatrix(
 		vec3(pos.x, pos.y, pos.z), // set position
-		vec3(0.0, 1.0, 0.0), // lock Y axis
-		noise.x * 320.0, // rotate 0-360 (over Y)
+		vec3(1.0, 0.0, 1.0), // lock Y axis
+		ran * 320.0, // rotate 0-360 (over Y)
 		scale); // SCALE
 }
 

@@ -71,11 +71,10 @@ void vertex() {
 	pos.x += (EMISSION_TRANSFORM[3][0] - mod(EMISSION_TRANSFORM[3][0], GRASS_SPACING));
 	pos.z += (EMISSION_TRANSFORM[3][2] - mod(EMISSION_TRANSFORM[3][2], GRASS_SPACING));
 
-
 	vec2 noise = texture(NOISE_MAP, pos.xz).xy; // generate some noise based on our _world_ position
 
-	pos.x += (noise.x * 8.0 ) * GRASS_SPACING;
-	pos.z += (noise.y * 8.0 ) * GRASS_SPACING; // apply noise and spacing
+	pos.x += (-6. + noise.x * 12.0 ) * GRASS_SPACING;
+	pos.z += (-6. + noise.y * 12.0 ) * GRASS_SPACING; // apply noise and spacing
 	pos.y = get_height(pos.xz); // apply height
 
 	vec2 feat_pos = pos.xz;
@@ -83,7 +82,7 @@ void vertex() {
 	feat_pos /= MAP_SIZE; // center
 	
 	// remove particle if
-	if (pos.y < TERRAIN_MIN_H - noise.y * 0.1 || pos.y > TERRAIN_MAX_H + noise.x * 0.1) { // don't fit any terrain mask or is underwater
+	if (pos.y < TERRAIN_MIN_H || pos.y > TERRAIN_MAX_H ) { // don't fit any terrain mask or is underwater
 		pos.y = -100000.0;
 	}
 	
@@ -91,13 +90,13 @@ void vertex() {
 	pos.y -= 2. + noise.x * 4.0;
 	
 	// calculate random scaling but within min/max
-	float scale = noise.x * GRASS_SCALE_MAX;
+	float scale = mix(GRASS_SCALE_MIN, GRASS_SCALE_MAX, noise.x * .5);
 
 	// do the final transformation
 	TRANSFORM = enterTheMatrix(
 		vec3(pos.x, pos.y, pos.z), // set position
 		vec3(0.0, 1.0, 0.0), // lock Y axis
-		clamp(noise.x * 320.0, 0.0, 320.0), // rotate 0-360 (over Y)
+		noise.x * 320.0, // rotate 0-360 (over Y)
 		scale); // SCALE
 }
 
